@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# This script takes a single argument, a directory. It will delete files in that directory that
+# have an integer name and are even (zero being considered even). Files that have non numerical names
+# will be ignored (with a message)
+
+DIRECTORY=$1
+
+echo working on $DIRECTORY
+
+REG_EX='^[0-9]+$'
+
+for path in $DIRECTORY/*
+do
+   filename=$(basename $path)
+
+   if [[ $filename =~ $REG_EX ]]
+   then
+      if [[ $(($(basename $filename) % 2)) -eq 0 ]]
+      then
+         echo "deleting $filename ($path)"
+         rm $path
+      fi
+   else
+      echo "$filename ($path): name is not a number, ignoring"
+   fi
+
+done
+
+
